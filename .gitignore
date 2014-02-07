@@ -1,0 +1,152 @@
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Data;
+using System.Drawing;
+using System.Linq;
+using System.Text;
+using System.Windows.Forms;
+using System.Collections;
+
+namespace FinalSortedList
+{
+    public partial class Form1 : Form
+    {
+        public Form1()
+        {
+            InitializeComponent();
+        }
+
+        #region Declarations
+
+        SortedList sl = new SortedList();
+        ArrayList al = new ArrayList();
+
+        Random ranVal = new Random();
+
+        int score;
+
+        #endregion
+
+        #region Methods
+
+        public void values()
+        {
+            //Add the various values into the sorted list.
+            sl.Add("Red", "Colours");
+            sl.Add("Blue", "Colours");
+            sl.Add("Green", "Colours");
+            sl.Add("Square", "Shapes");
+            sl.Add("Triangle", "Shapes");
+            sl.Add("Circle", "Shapes");
+            sl.Add("Rand", "Currency");
+            sl.Add("Dollar", "Currency");
+            sl.Add("Euro", "Currency");            
+
+            //Display a random value eg. colours, shapes, or currency.
+            lblValue.Text = sl.GetByIndex(ranVal.Next(9)).ToString();
+        }
+
+        public int ran()
+        {
+            //Create a random instance that checks that there are no two numbers that are the same, and
+            //adds it to the ArrayList.
+            Random rKey = new Random();
+            int key = rKey.Next(9);
+
+            while (al.Contains(key))
+            {
+                key = rKey.Next(9);
+            }
+            al.Add(key);
+            return key;
+        }
+
+        #endregion
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            //Reset.
+            al.Clear();
+            sl.Clear();
+            score = 0;
+            lblScore.Text = "Score:  /3";            
+            cb1.Checked = false;
+            cb2.Checked = false;
+            cb3.Checked = false;
+            btnMark.Enabled = true;
+
+            //Call the values method.
+            values();
+
+            //Display randomly selected key in the three check boxes.
+            cb1.Text = sl.GetKey(ran()).ToString();
+            cb2.Text = sl.GetKey(ran()).ToString();
+            cb3.Text = sl.GetKey(ran()).ToString();
+        }
+
+        private void btnMark_Click(object sender, EventArgs e)
+        {
+            string ans1 = sl[cb1.Text].ToString();
+            string ans2 = sl[cb2.Text].ToString();
+            string ans3 = sl[cb3.Text].ToString();
+
+            //Check the first check box.
+            if (ans1 == lblValue.Text)
+            {
+                if (cb1.Checked == true)
+                {
+                    score++;
+                }
+            }
+            else
+            {
+                if (cb1.Checked == false)
+                {
+                    score++;
+                }
+            }
+
+            //Check the second check box.
+            if (ans2 == lblValue.Text)
+            {
+                if (cb2.Checked == true)
+                {
+                    score++;
+                }
+            }
+            else
+            {
+                if (cb2.Checked == false)
+                {
+                    score++;
+                }
+            }
+
+            //Check the third check box.
+            if (ans3 == lblValue.Text)
+            {
+                if (cb3.Checked == true)
+                {
+                    score++;
+                }
+            }
+            else
+            {
+                if (cb3.Checked == false)
+                {
+                    score++;
+                }
+            }
+
+            //Update the score label.
+            lblScore.Text = "Score: " + score + "/3";
+            btnMark.Enabled = false;
+        }
+    }
+}
